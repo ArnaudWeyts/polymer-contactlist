@@ -1,2 +1,1 @@
-# polymer-contactlist
-A school project using Polymer and Twig
+## Labo 03-04

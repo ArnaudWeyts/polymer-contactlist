@@ -1,0 +1,58 @@
+<link rel="import" href="../vendor/polymer/polymer.html">
+<link rel="import" href="../vendor/paper-elements/paper-elements.html">
+<link rel="import" href="../vendor/paper-styles/color.html">
+<link rel="import" href="../vendor/paper-styles/default-theme.html">
+<dom-module id="business-card">
+<template>
+	<style>
+		:root {
+			--paper-card:{
+				width: 100%;
+				text-overflow: ellipsis;
+				z-index: 0;
+			}
+			--paper-card-background-color: #3B4358;
+			--paper-card-header-color: #FFF;
+			--paper-card-content:{
+				color: #FFF;
+				text-align: center;
+			};
+			--paper-card-actions:{
+				clear: both;
+			};
+			--paper-button:{
+				color: #FFF;
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+		}
+		.avatar {
+			border-radius: 50%;
+			height: 100px;
+			width: 100px;
+		}
+	</style>
+	<paper-card heading="{{ name }}" image>
+	<div class="card-content">
+		<iron-image class="avatar" sizing="contain" src='img/{{ image }}.jpg'></iron-image>
+		<p>{{ occupation }}</p>
+		<p>@ {{ company }}</p>
+	</div>
+	<div class="card-actions">
+		<paper-button>Contact</paper-button>
+	</div>
+</paper-card>
+</template>
+<script>
+  // register a new element called business-card
+  Polymer({
+  	is: "business-card",
+  	properties: {
+  		name: String,
+  		occupation: String,
+  		company: String,
+  		image: String
+  	}
+  });
+ </script>
+</dom-module>

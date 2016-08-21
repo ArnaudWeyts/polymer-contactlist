@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="../vendor/webcomponentsjs/webcomponents-lite.min.js"></script>
+	<link rel="import" href="business-card.html">
+	<link rel="import" href="../vendor/polymer/polymer.html">
+	<link rel="import" href="../vendor/paper-elements/paper-elements.html">
+	<link rel="import" href="../vendor/paper-styles/color.html">
+	<link rel="import" href="../vendor/paper-styles/default-theme.html">
+	<link href="../vendor/iron-icons/iron-icons.html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+	<dom-module id="main-layout">
+		<template>
+			<style>
+				paper-fab {
+					position: fixed;
+					bottom: 1.6rem;
+					right: 1.6rem;
+				}
+				:root {
+					--paper-toolbar-background: #282F3F;
+
+					--paper-fab-background: #1DE9B6;
+				};
+				.paper-item-link {
+    				color: inherit;
+    				text-decoration: none;
+  				}
+				.flex-container {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					justify-content: flex-start;
+					align-content: flex-start;
+					align-items: flex-start;
+					margin: 0.2rem;
+				}
+				.flex-item {
+					min-width: 17rem;
+					flex-shrink: 0;
+					flex-basis: 17rem;
+					flex-grow: 1;
+					margin: 0.2rem;
+				}
+				.filler {
+					min-width: 17rem;
+					flex: 1 0 17rem;
+					margin-left: 0.2rem;
+					margin-right: 0.2rem;
+					height: 0px;
+				}
+				@media(max-width: 70rem) {
+					.flex-item {
+						flex-basis: 10rem;
+					}
+					.filler {
+						flex-basis: 10rem;
+					}
+				}
+			</style>
+			<paper-drawer-panel>
+  				<paper-header-panel drawer>
+  					<paper-toolbar>
+
+    				</paper-toolbar>
+    				<div>
+    					<paper-menu class="paper-menu-drawer" selected="0">
+    						<a class="paper-item-link" href='#all'>
+    							<paper-item value="all">All</paper-item>
+    						</a>
+    						<a class="paper-item-link" href='#friends'>
+    							<paper-item value="friends">Friends</paper-item>
+    						</a>
+    						<a class="paper-item-link" href='#collegues'>
+    							<paper-item value="collegues">Collegues</paper-item>
+    						</a>
+    						<a class="paper-item-link" href='#family'>
+    							<paper-item value="family">Family</paper-item>
+    						</a>
+    					</paper-menu>
+    				</div>
+  				</paper-header-panel>
+  				<paper-header-panel main>
+    				<paper-toolbar>
+    					<paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+      					<span class="title">Business Cards</span>
+    				</paper-toolbar>
+    				<div class="flex-container">
+    					{% for user in users %}
+							<business-card class="flex-item" name="{{ user.name }}" occupation="{{ user.occupation }}" company="{{ user.company }}" image="{{ user.id }}" data-tags="{{ user.category }}"></business-card>
+						{% endfor %}
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<div class="filler"></div>
+						<paper-fab icon="add" on-tap="addButton"></paper-fab>
+						<paper-dialog class="dialog">
+							<h2>Add a person</h2>
+							<paper-input label="Name"></paper-input>
+							<paper-input label="Occupation"></paper-input>
+							<paper-input label="Company"></paper-input>
+							<paper-input label="Email"></paper-input>
+						  	<div class="buttons">
+						    	<paper-button dialog-dismiss>Cancel</paper-button>
+						    	<paper-button dialog-confirm>Add</paper-button>
+						  	</div>
+						</paper-dialog>
+    				</div>
+  				</paper-header-panel>
+			</paper-drawer-panel>
+		</template>
+		<script>
+			// register a new element called main-layout
+			Polymer({
+				is: "main-layout",
+				ready: function () {
+					var menu = this.querySelector(".paper-menu-drawer");
+					var items = this.querySelectorAll(".flex-item");
+					var itemArray = Array.prototype.slice.call(items);
+
+					menu.addEventListener('iron-select', function() {
+						var selectedOption = menu.selectedItem.children[0].getAttribute('value');
+						if (selectedOption == 'all') {
+							itemArray.forEach(function(item) {
+								item.removeAttribute('hidden',"");
+							});
+						}
+						else {
+							itemArray.forEach(function(item) {
+								var tag = item.getAttribute("data-tags");
+								item.removeAttribute('hidden',"");
+								if (tag !== selectedOption) {
+									item.setAttribute('hidden',"");
+								}
+							});
+						}
+
+					});
+				},
+				addButton: function() {
+						this.querySelector(".dialog").open();
+				}
+			});
+		</script>
+	</dom-module>
+	<main-layout></main-layout>
+</body>
+</html>
